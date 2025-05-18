@@ -44,3 +44,4 @@ BE/.idea
 BE/.gradle
 BE/src/main/resources/application-dev.yml
 BE/src/main/resources/application-prod.yml
+node_modules
