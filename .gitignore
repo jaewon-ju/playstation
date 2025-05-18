@@ -35,6 +35,8 @@ FE/.env*.local
 
 # typescript
 FE/*.tsbuildinfo
+FE/assets
+FE/.expo
 
 # gradle
 BE/build/
@@ -44,4 +46,3 @@ BE/.idea
 BE/.gradle
 BE/src/main/resources/application-dev.yml
 BE/src/main/resources/application-prod.yml
-node_modules

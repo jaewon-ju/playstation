@@ -53,7 +53,7 @@ export default function MainScreen() {
 
       {/* 쇼핑 아이템 그리드 */}
       <View
-        className="absolute top-[10rem] p-[1rem] 
+        className="absolute top-[10rem] px-[1rem] bottom-[2rem]
       w-full flex-row flex-wrap justify-between items-start
       overflow-y-scroll"
       >
