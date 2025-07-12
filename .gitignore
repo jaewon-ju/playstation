@@ -37,6 +37,7 @@ FE/.env*.local
 FE/*.tsbuildinfo
 FE/assets
 FE/.expo
+FE/.env
 
 # gradle
 BE/build/

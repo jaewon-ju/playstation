@@ -3,21 +3,40 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Linking,
   Image,
+  Alert,
 } from "react-native";
+import { useState } from "react";
 import { useRouter } from "expo-router";
+import { supabase } from "../../lib/supabase";
 
-const BASE_FONT_SIZE = 16; // 1rem = 16px 기준
-
+const BASE_FONT_SIZE = 16;
 export const rem = (value: number) => value * BASE_FONT_SIZE;
 
 export default function LoginScreen() {
   const router = useRouter();
-  const handleLogin = () => {
-    // TODO: 로그인 로직 (Firebase, OAuth 등)
-    // 성공 후 페이지 이동
-    router.push("/main"); // 예: /main.tsx 페이지로 이동
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      Alert.alert("로그인 실패", error.message);
+    } else {
+      router.push("/Main");
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email);
+    if (error) {
+      Alert.alert("비밀번호 찾기 실패", error.message);
+    } else {
+      Alert.alert("비밀번호 재설정 이메일 발송됨", "이메일을 확인해주세요.");
+    }
   };
 
   return (
@@ -91,13 +110,13 @@ export default function LoginScreen() {
       <View className="flex-row justify-between px-4 pt-4">
         <Text
           className=" text-black opacity-80 font-[Tomorrow]"
-          onPress={() => Linking.openURL("#")}
+          onPress={handlePasswordReset}
         >
-          패스워드 찾기
+          비밀번호 재설정
         </Text>
         <Text
           className=" text-black opacity-80 font-[Tomorrow]"
-          onPress={() => Linking.openURL("#")}
+          onPress={() => router.push("/Signup")}
         >
           회원가입
         </Text>
