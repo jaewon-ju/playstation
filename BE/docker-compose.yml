@@ -1,15 +1,15 @@
 services:
-  api:
-    build:
-      context: .
-      dockerfile: ./docker/api/Dockerfile
-    container_name: api
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    networks:
-      - backend
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/api/Dockerfile
+  #   container_name: api
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     - backend
 
   postgres:
     image: postgres:15
@@ -22,10 +22,12 @@ services:
     ports:
       - "5432:5432"
     env_file:
-
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-networks:
-  backend:
-    driver: bridge
+volumes:
+  postgres_data:
+# networks:
+#   backend:
+#     driver: bridge
