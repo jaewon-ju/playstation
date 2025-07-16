@@ -5,6 +5,7 @@ import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ps.BE.entity.Genre;
 
 @Getter
 @NoArgsConstructor
@@ -16,5 +17,12 @@ public class GenreDTO {
     public GenreDTO(UUID id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public static GenreDTO toDTO(Genre genre) {
+        return GenreDTO.builder()
+                .id(genre.getId())
+                .name(genre.getName())
+                .build();
     }
 }

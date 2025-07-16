@@ -1,43 +1,55 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import Constants from "expo-constants";
+import { fetchGames as fetchGamesApi } from "@/lib/api.ts/game";
+import { fetchGenres as fetchGenresApi } from "@/lib/api.ts/genre";
+import { Game, Genre } from "@/types";
 
-const API_BASE_URL = Constants.expoConfig?.extra?.apiBaseUrl;
+interface GameState {
+  games: Game[];
+  genres: Genre[];
+  gameLoading: boolean;
+  genreLoading: boolean;
+}
 
 export const fetchGames = createAsyncThunk(
   "game/fetchGames",
-  async (lastId: string | null) => {
-    const res = await axios.get(
-      `${API_BASE_URL}/games?lastId=${lastId}&size=20`
-    );
-    return res.data;
+  async ({ lastId, size }: { lastId: string | null; size: number }) => {
+    const res = await fetchGamesApi(lastId, size);
+    return res;
   }
 );
 
 export const fetchGenres = createAsyncThunk("genre/fetchGenres", async () => {
-  const res = await axios.get(`${API_BASE_URL}/genres`);
-  return res.data;
+  const res = await fetchGenresApi();
+  return res;
 });
 
 const gameSlice = createSlice({
   name: "game",
   initialState: {
     games: [],
-    categories: [],
-    loading: false,
-  },
+    genres: [],
+    gameLoading: true,
+    genreLoading: true,
+  } as GameState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchGames.pending, (state) => {
-        state.loading = true;
+        state.gameLoading = true;
       })
       .addCase(fetchGames.fulfilled, (state, action) => {
         state.games = action.payload;
-        state.loading = false;
+        state.gameLoading = false;
       })
-      .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.categories = action.payload;
+      .addCase(fetchGames.rejected, (state) => {
+        state.gameLoading = false;
+      })
+      .addCase(fetchGenres.pending, (state) => {
+        state.genreLoading = true;
+      })
+      .addCase(fetchGenres.fulfilled, (state, action) => {
+        state.genres = action.payload;
+        state.genreLoading = false;
       });
   },
 });

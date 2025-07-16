@@ -1,17 +1,44 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { Image } from "expo-image";
 
 import { cssInterop } from "nativewind";
 import GameCard from "../Cards/GameCard";
-import Constants from "expo-constants";
-
-const API_BASE_URL = Constants.expoConfig?.extra?.apiBaseUrl;
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { fetchGames, fetchGenres } from "@/store/slices/gameSlice";
+import { useEffect } from "react";
 
 const StyledExpoImage = cssInterop(Image, {
   className: "style",
 });
 
 export default function MainScreen() {
+  const { games, genres, gameLoading, genreLoading } = useSelector(
+    (state: RootState) => state.game
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchGames({ lastId: null, size: 20 }));
+        await dispatch(fetchGenres());
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (gameLoading || genreLoading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-white">
+        <ActivityIndicator size="large" color="#002bd9" />
+        <Text className="text-black mt-2">로딩 중...</Text>
+      </View>
+    );
+  }
   return (
     <View className="relative w-full h-full flex-col justify-center items-center">
       {/* 상단 바 */}
@@ -39,10 +66,10 @@ export default function MainScreen() {
       <View className="absolute w-full h-[5rem] top-[5rem] p-[1rem] left-0 flex-row justify-between items-center">
         <View className="w-[80%] flex-row justify-center items-center overflow-x-auto">
           <View className="flex-row gap-4 justify-left items-center">
-            {["FPS", "RPG", "MOBA", "RTS", "MMORPG", "MMORPG"].map((item) => (
+            {genres.map((item) => (
               <View className="px-[0.5rem] border border-[#002bd9] rounded-full">
                 <Text className="font-[Tomorrow] text-[1rem] text-black">
-                  {item}
+                  {item.name}
                 </Text>
               </View>
             ))}
@@ -61,35 +88,8 @@ export default function MainScreen() {
       overflow-y-scroll"
       >
         {/* 쇼핑 셀 */}
-        {[
-          "Game A",
-          "Game B",
-          "Game C",
-          "Game D",
-          "Game E",
-          "Game F",
-          "Game G",
-          "Game H",
-          "Game I",
-          "Game J",
-          "Game K",
-          "Game L",
-          "Game M",
-          "Game N",
-          "Game O",
-          "Game P",
-          "Game Q",
-          "Game R",
-          "Game S",
-          "Game T",
-          "Game U",
-          "Game V",
-          "Game W",
-          "Game X",
-          "Game Y",
-          "Game Z",
-        ].map((item) => (
-          <GameCard item={item} />
+        {games.map((item) => (
+          <GameCard key={item.id} item={item} />
         ))}
       </View>
     </View>
