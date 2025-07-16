@@ -14,16 +14,16 @@ export default function GameCard({ item }: { item: Game }) {
       {/* Game Image */}
       <View className="relative w-[100%] aspect-square">
         <StyledExpoImage
-          source={require("../../assets/images/main.png")}
+          source={item.imageUrl}
           className="w-[100%] h-[100%] rounded-md"
         />
       </View>
       <View className="flex flex-col items-start gap-[6px] w-full h-[42px]">
-        <Text className="font-bold text-[15px] text-black/80">
+        <Text className="font-[Tomorrow] font-bold text-[15px] text-black/80">
           {item.title}
         </Text>
-        <Text className="font-bold text-[13px] text-black/80">
-          ${item.currentPrice}
+        <Text className="font-[Tomorrow] font-bold text-[13px] text-black/80">
+          ${item.currentPrice ? item.currentPrice / 100 : 0}
         </Text>
       </View>
     </View>

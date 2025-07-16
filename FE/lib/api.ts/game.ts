@@ -7,8 +7,13 @@ export const fetchGames = async (
   lastId: string | null,
   size: number
 ): Promise<Game[]> => {
-  const res = await axios.get<Game[]>(
-    `${API_BASE_URL}/games?lastId=${lastId}&size=${size}`
-  );
-  return res.data;
+  if (lastId) {
+    const res = await axios.get<Game[]>(
+      `${API_BASE_URL}/games?lastId=${lastId}&size=${size}`
+    );
+    return res.data;
+  } else {
+    const res = await axios.get<Game[]>(`${API_BASE_URL}/games?size=${size}`);
+    return res.data;
+  }
 };

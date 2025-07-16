@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { Session } from "@supabase/supabase-js";
+import MainScreen from "@/components/Screen/MainScreen";
 
 export default function Index() {
   const [session, setSession] = useState<Session | null>(null);
@@ -17,7 +18,8 @@ export default function Index() {
 
   return (
     <View className="flex-1 justify-center items-center">
-      <LoginScreen />
+      {/* <LoginScreen /> */}
+      <MainScreen />
     </View>
   );
 }

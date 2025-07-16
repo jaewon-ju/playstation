@@ -3,6 +3,8 @@ import "../global.css";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
+import { store } from "@/store";
+import { Provider } from "react-redux";
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -20,5 +22,9 @@ export default function RootLayout() {
     return null;
   }
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <Provider store={store}>
+      <Stack screenOptions={{ headerShown: false }} />
+    </Provider>
+  );
 }

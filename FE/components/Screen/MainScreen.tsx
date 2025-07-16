@@ -7,7 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { fetchGames, fetchGenres } from "@/store/slices/gameSlice";
 import { useEffect } from "react";
+import { logger } from "react-native-logs";
 
+const log = logger.createLogger();
 const StyledExpoImage = cssInterop(Image, {
   className: "style",
 });
@@ -22,10 +24,10 @@ export default function MainScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await dispatch(fetchGames({ lastId: null, size: 20 }));
+        await dispatch(fetchGames({ lastId: null, size: 21 }));
         await dispatch(fetchGenres());
       } catch (error) {
-        console.error(error);
+        log.error(error);
       }
     };
     fetchData();

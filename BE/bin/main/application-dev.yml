@@ -36,3 +36,7 @@ springdoc:
     tagsSorter: alpha
     path: ${SWAGGER_PATH:/swagger-ui}
   show-actuator: true
+
+cors:
+  allowed-origins:
+    - http://localhost:8081
