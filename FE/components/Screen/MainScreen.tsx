@@ -3,6 +3,9 @@ import { Image } from "expo-image";
 
 import { cssInterop } from "nativewind";
 import GameCard from "../Cards/GameCard";
+import Constants from "expo-constants";
+
+const API_BASE_URL = Constants.expoConfig?.extra?.apiBaseUrl;
 
 const StyledExpoImage = cssInterop(Image, {
   className: "style",

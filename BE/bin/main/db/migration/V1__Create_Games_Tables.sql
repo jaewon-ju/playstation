@@ -34,5 +34,5 @@ CREATE TABLE genres (
 CREATE TABLE game_genres (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     game_id UUID NOT NULL REFERENCES games(id) ON DELETE CASCADE,
-    genre_id UUID NOT NULL REFERENCES genres(id) ON DELETE CASCADE,
+    genre_id UUID NOT NULL REFERENCES genres(id) ON DELETE CASCADE
 );

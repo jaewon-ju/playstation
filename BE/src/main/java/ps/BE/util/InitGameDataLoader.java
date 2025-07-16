@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -21,6 +22,7 @@ import java.io.InputStream;
 import java.util.*;
 
 @Component
+@Slf4j
 public class InitGameDataLoader {
 
     private final GameRepository gameRepository;
@@ -36,7 +38,6 @@ public class InitGameDataLoader {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @PostConstruct
     @Transactional
     public void init() {
         try {
@@ -61,6 +62,7 @@ public class InitGameDataLoader {
                         .isMonthly(false)
                         .build();
                 gameRepository.save(game);
+                log.info("Game saved: {}", game.getTitle());
 
                 Genre genre = genreRepository.findByName(genreName)
                         .orElseGet(() -> genreRepository.save(Genre.builder().name(genreName).build()));
